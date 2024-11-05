@@ -1,16 +1,15 @@
 //
 //  ContentView.swift
-//  SnapScroll_NRR
+//  SnapScroll
 //
-//  Created by Naveen Reddy Nagulapally on 2024-10-31.
+//  Created by Naveen Reddy Nagulapally on 2024-10-21.
 //
 
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-      
-        LoginPage()
+        MainTabView()
     }
 }
 
