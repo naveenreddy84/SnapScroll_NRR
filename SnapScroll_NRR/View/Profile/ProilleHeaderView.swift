@@ -13,7 +13,7 @@ struct ProilleHeaderView: View {
     var body: some View{
         VStack(alignment: .leading){
             HStack{
-                Image("batman")
+                Image("Batman")
                     .resizable()
                     .scaledToFill()
                     .frame(width: 80, height: 80)

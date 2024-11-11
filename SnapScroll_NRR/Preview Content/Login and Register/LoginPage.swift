@@ -11,7 +11,7 @@ struct LoginPage: View {
     
     @State  private var email = ""
     @State private  var password = ""
-    
+    @EnvironmentObject var viewModel: AuthViewModel
    
     
     var body: some View {
@@ -48,7 +48,7 @@ struct LoginPage: View {
                     HStack {
                         Spacer()
                           Button(action: {}, label: {
-                              Text("Forget Password?")
+                              Text("Forgot Password?")
                                   .font(.system(size: 13,weight: .semibold))
                                   .foregroundColor(.white)
                                   .padding(.top)
@@ -57,7 +57,9 @@ struct LoginPage: View {
                          
                       }
                     VStack{
-                        Button(action: {}, label: {
+                        Button(action: {
+                            viewModel.login(withEmail: email, password: password)
+                        }, label: {
                             Text("Login")
                                 .font(.headline)
                                 .foregroundColor(.white)
@@ -81,12 +83,7 @@ struct LoginPage: View {
                             }.foregroundColor(.white)
                         })
                     }
-                                    
-                    
-               
-            
-                    
-                  
+
                        
                     
                 }
