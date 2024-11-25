@@ -8,12 +8,16 @@
 import SwiftUI
 
 struct UserListView: View {
+    @ObservedObject var viewModel: SearchViewModel
+    
+    
+    
     var body: some View {
         ScrollView{
-            
             LazyVStack{
-                ForEach(0 ..< 20){ _ in
-                    NavigationLink(destination: ProfileView(), label:{
+                ForEach(viewModel.users){ _ in
+                    NavigationLink(destination: ProfileView(),
+                                   label:{
                         UserCell()
                             .padding(.leading)
                     })
@@ -24,6 +28,5 @@ struct UserListView: View {
     }
 }
 
-#Preview {
-    UserListView()
-}
+
+

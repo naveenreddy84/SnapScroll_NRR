@@ -74,10 +74,11 @@ class AuthViewModel: ObservableObject {
     func fetchUser() {
         guard let uid = userSession?.uid else { return }
         COLLECTIONS_USERS.document(uid).getDocument { snapshot, _ in
-         guard let dictionary = snapshot?.data() else { return }
-            
-            guard let user = dictionary["username"] else { return }
-            print(   "username is : \(user)")
+           guard let user = try?
+                    snapshot?.data(as: User.self)
+            else {
+               return }
+            print("DEBUG : user  is\(user)")
             
         }
         
