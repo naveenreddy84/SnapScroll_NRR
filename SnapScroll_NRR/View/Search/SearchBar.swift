@@ -43,7 +43,7 @@ struct SearchBar: View {
                 })
                 .padding(.trailing, 8)
                 .transition(.move(edge: .trailing))
-                .animation(.default)
+                
             }
         }
     }
