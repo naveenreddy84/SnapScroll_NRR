@@ -23,14 +23,18 @@ class SearchViewModel: ObservableObject {
             
             self.users = documents.compactMap({try? $0.data(as: User.self) })
             
-            print(self.users)
-            }
-            
-         
-            
             
         }
     }
-    
+        
+        
+        
+        func filteredUsers(_ query: String) -> [User] {
+            let loweredQuery = query.lowercased()
+            return users.filter({ $0.fullname.lowercased().contains(loweredQuery)  ||  $0.username.lowercased().contains(loweredQuery)})
+        }
+        
+        
+    }
 
 
