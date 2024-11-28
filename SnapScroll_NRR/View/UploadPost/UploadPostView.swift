@@ -45,7 +45,11 @@ struct UploadPostView: View {
             
             Button(action: {
                 if let image = selectedImage{
-                    viewModel.uploadPost(caption: captionText, image: image)
+                    viewModel.uploadPost(caption: captionText, image: image) { _ in
+                        captionText = ""
+                        postImage = nil
+                        
+                    }
                 }
             } , label: {
                 Text("Share")

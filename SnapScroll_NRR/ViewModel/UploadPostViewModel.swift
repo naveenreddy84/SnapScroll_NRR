@@ -10,7 +10,7 @@ import Firebase
 
 class UploadPostViewModel: ObservableObject{
     
-    func uploadPost(caption: String, image: UIImage){
+    func uploadPost(caption: String, image: UIImage, completion: FireStoreCompletion){
         guard let user = AuthViewModel.shared.currentUser else{return}
         
         ImageUploader.uploadImage(image: image, type: .post){ imageUrl in
