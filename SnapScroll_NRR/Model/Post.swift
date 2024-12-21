@@ -12,8 +12,7 @@ import FirebaseFirestore
 struct Post: Identifiable, Decodable{
     @DocumentID var id: String?
     let ownerUid: String
-    let username: String
-    let captiion: String
+    let capttion: String
     let likes:  Int
     let imageUrl: String
     let timestamp: Timestamp

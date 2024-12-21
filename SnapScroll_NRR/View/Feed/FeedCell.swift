@@ -75,7 +75,7 @@ struct FeedCell: View {
             HStack{
                 Text(post.ownerUsername)
                     .font(.system(size: 14, weight: .semibold)) +
-                Text(" \(post.captiion)")
+                Text(" \(post.capttion)")
                     .font(.system(size: 15))
             }.padding(.horizontal, 8)
             
