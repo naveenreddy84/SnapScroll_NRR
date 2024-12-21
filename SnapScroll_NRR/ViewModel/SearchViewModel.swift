@@ -10,6 +10,7 @@ import SwiftUI
 
 class SearchViewModel: ObservableObject {
     @Published var users = [User]()
+  
     
     init(){
         fetchUsers()
@@ -26,6 +27,8 @@ class SearchViewModel: ObservableObject {
             
         }
     }
+    
+   
         
         
         
@@ -36,5 +39,6 @@ class SearchViewModel: ObservableObject {
         
         
     }
-
+    
+    
 
