@@ -18,6 +18,8 @@ struct Post: Identifiable, Decodable{
     let timestamp: Timestamp
     let ownerImageUrl: String
     let ownerUsername: String
+    
+    var didLike: Bool? = false
 }
 
 
