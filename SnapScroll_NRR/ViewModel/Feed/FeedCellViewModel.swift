@@ -14,8 +14,10 @@ class FeedCellViewModel: ObservableObject {
         let label = post.likes == 1 ? "like" : "likes"
         return "\(post.likes) \(label)"
     }
+    
     init(post: Post) {
         self.post = post
+        checkIfUserLikedPost()
     }
     
     func like(){
@@ -57,7 +59,14 @@ class FeedCellViewModel: ObservableObject {
     }
     
     func checkIfUserLikedPost(){
-        
+        guard let uid = AuthViewModel.shared.userSession?.uid else { return }
+        guard let postId = post.id else { return }
+
+        COLLECTIONS_USERS.document(uid).collection("user-likes").document(postId)
+            .getDocument { snapshot, _ in
+                guard let didLike = snapshot?.exists else { return }
+                self.post.didLike = didLike
+            }
         
     }
 }
