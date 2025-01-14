@@ -28,13 +28,28 @@ class SearchViewModel: ObservableObject {
         }
     }
     
-   
         
-        
-        
+//        func filteredUsers(_ query: String) -> [User] {
+//            let loweredQuery = query.lowercased()
+//            return users.filter({ $0.fullname.lowercased().contains(loweredQuery)  ||  $0.username.lowercased().contains(loweredQuery)})
+//        }
+    
+    // ✅ Return all users when the query is empty, otherwise filter
         func filteredUsers(_ query: String) -> [User] {
             let loweredQuery = query.lowercased()
-            return users.filter({ $0.fullname.lowercased().contains(loweredQuery)  ||  $0.username.lowercased().contains(loweredQuery)})
+            let currentUserId = AuthViewModel.shared.currentUser?.id ?? ""
+
+            if query.isEmpty {
+                // ✅ Return all users except the logged-in user if no search text is entered
+                return users.filter { $0.id != currentUserId }
+            } else {
+                // ✅ Filter users by username or fullname
+                return users.filter {
+                    ($0.fullname.lowercased().contains(loweredQuery) ||
+                     $0.username.lowercased().contains(loweredQuery)) &&
+                    $0.id != currentUserId
+                }
+            }
         }
         
         
