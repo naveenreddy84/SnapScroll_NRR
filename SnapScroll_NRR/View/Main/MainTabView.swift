@@ -50,7 +50,7 @@ struct MainTabView: View {
                         Image(systemName: "heart")
                     }.tag(3)
                 
-                ProfileView(user: user)
+                ProfileView(viewModel: ProfileViewModel(user: user))
                     .onTapGesture {
                         selectedIndex=4
                     }

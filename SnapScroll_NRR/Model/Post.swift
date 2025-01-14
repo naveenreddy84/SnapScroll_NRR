@@ -20,6 +20,8 @@ struct Post: Identifiable, Decodable{
     let ownerUsername: String
     
     var didLike: Bool? = false
+    var user: User?
+    var commentCount: Int?
 }
 
 
