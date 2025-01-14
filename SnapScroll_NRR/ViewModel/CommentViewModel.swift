@@ -18,6 +18,7 @@ class CommentViewModel: ObservableObject {
         fetchComments()
     }
     
+
     func uploadComment(commentText: String) {
         guard let user = AuthViewModel.shared.currentUser else {return}
         guard let postId = post.id else {return}
@@ -35,6 +36,7 @@ class CommentViewModel: ObservableObject {
                 return
             }
             
+            NotificationsViewModel.uploadNotification(toUid: self.post.ownerUid, type: .comment, post: self.post)
         }
     }
     
