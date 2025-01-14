@@ -17,7 +17,7 @@ struct UserStatView: View {
             Text("\(value)")
                 .font(.system(size: 15, weight: .semibold))
             
-            Text("Followers")
+            Text("\(title)")
                 .font(.system(size: 15))
         }
         .frame(width: 80, alignment: .center)
