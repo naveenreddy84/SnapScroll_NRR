@@ -8,27 +8,27 @@
 import SwiftUI
 
 struct ProfileView: View {
-    
-    let user : User
-
     @ObservedObject var viewModel: ProfileViewModel
-    
-    init(user: User) {
-        self.user = user
-        self.viewModel = ProfileViewModel(user: user)
-    }
+    @State private var showEditProfile = false
 
-    
     var body: some View {
-        ScrollView{
-            VStack(spacing: 32){
+        ScrollView {
+            VStack(spacing: 5) { // ✅ Remove spacing between elements
+                // Profile Header
+                ProilleHeaderView(viewModel: viewModel, showEditProfile: $showEditProfile)
 
-                ProilleHeaderView(viewModel: viewModel)
-                
-                PostGridView(config: .profile(user.id ?? ""))
-
-                
-            }.padding(.top)
+                // Post Grid
+                PostGridView(config: .profile(viewModel.user.id ?? ""))
+            }
+        }
+        .navigationTitle(viewModel.user.username)
+        .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $showEditProfile) {
+            EditProfileView(user: $viewModel.user)
+        }
+        .onAppear {
+                    // ✅ Fetch the latest user data from Firestore
+                    viewModel.fetchUserData()
         }
     }
 }
