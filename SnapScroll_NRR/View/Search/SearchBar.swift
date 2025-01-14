@@ -8,33 +8,38 @@
 import SwiftUI
 
 struct SearchBar: View {
-    
     @Binding var text: String
     @Binding var isEditing: Bool
     
     var body: some View {
-        HStack{
+        HStack {
+            // TextField for search input
             TextField("Search...", text: $text)
                 .padding(8)
                 .padding(.horizontal, 24)
                 .background(Color(.systemGray6))
                 .cornerRadius(8)
                 .overlay(
-                    HStack{
+                    HStack {
                         Image(systemName: "magnifyingglass")
                             .foregroundColor(.gray)
                             .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                        
-                        
                     }
                 )
-                .onTapGesture{
-                    isEditing = true
+                .onTapGesture {
+                    // Activate search mode when tapping the TextField
+                    if !isEditing {
+                        isEditing = true
+                    }
                 }
             
+            // Cancel button is visible when editing
             if isEditing {
                 Button(action: {
-                    isEditing = false
+                    // Clear the search text and exit search mode
+                    withAnimation {
+                        isEditing = false
+                    }
                     text = ""
                     UIApplication.shared.endEditing()
                 }, label: {
@@ -42,12 +47,13 @@ struct SearchBar: View {
                         .foregroundColor(.black)
                 })
                 .padding(.trailing, 8)
-                .transition(.move(edge: .trailing))
-                
+                .transition(.move(edge: .trailing)) // Smooth transition for cancel button
             }
         }
+        .padding(.top, 8) // Ensure proper padding for a smooth experience
     }
 }
+
 
 #Preview {
     SearchBar(text: .constant("Text"), isEditing: .constant(true))
