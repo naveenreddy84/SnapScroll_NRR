@@ -22,6 +22,7 @@ class ProfileViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.user = userData
                     self.fetchUserStats()
+                    self.checkIfUserIsFollowed()
                 }
             } else {
                 print("DEBUG: Failed to fetch user data")
