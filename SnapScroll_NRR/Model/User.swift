@@ -10,10 +10,11 @@ import FirebaseFirestore
 struct User : Identifiable, Decodable{
     let username: String
     let email: String
-    let profileImageUrl: String
-    let fullname: String
+    var profileImageUrl: String
+    var fullname: String
     @DocumentID var id: String?
-
+    var bio: String?
+    var stats: UserStats?
     var isFollowed: Bool? = false
 
     
@@ -21,3 +22,12 @@ struct User : Identifiable, Decodable{
         return AuthViewModel.shared.userSession?.uid == id
     }
 }
+
+struct UserStats: Decodable {
+    var following: Int
+    var posts: Int
+    var followers: Int
+    
+}
+
+
