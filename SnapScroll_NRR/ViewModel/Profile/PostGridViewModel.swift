@@ -7,24 +7,24 @@
 
 import SwiftUI
 
-
-enum PostGridConfiguration{
+enum PostGridConfiguration {
     case explore
     case profile(String)
 }
 
-
 class PostGridViewModel: ObservableObject {
     
-  @Published var posts: [Post] = []
-    let config : PostGridConfiguration
+    @Published var posts: [Post] = []
+    let config: PostGridConfiguration
     
-    init(config : PostGridConfiguration) {
+    // ✅ Initializer that automatically fetches posts based on the config
+    init(config: PostGridConfiguration) {
         self.config = config
-        fetchPosts(forConfig: config)
+        fetchPosts()
     }
     
-    func fetchPosts(forConfig config : PostGridConfiguration){
+    // ✅ Fetch posts based on the configuration type
+    func fetchPosts() {
         switch config {
         case .explore:
             fetchExplorePosts()
@@ -33,20 +33,20 @@ class PostGridViewModel: ObservableObject {
         }
     }
     
+    // ✅ Fetch explore posts ordered by likes
     func fetchExplorePosts() {
-        COLLECTIONS_POSTS.getDocuments{ snapshot, _ in
-            guard let documents = snapshot?.documents else {return}
-            self.posts = documents.compactMap({try? $0.data(as: Post.self)})
-        
+        COLLECTIONS_POSTS.order(by: "likes", descending: true).getDocuments { snapshot, _ in
+            guard let documents = snapshot?.documents else { return }
+            self.posts = documents.compactMap { try? $0.data(as: Post.self) }
         }
     }
     
-    
-    func fetchUserPosts(forUid uid: String){
+    // ✅ Fetch posts for a specific user, ordered by timestamp
+    func fetchUserPosts(forUid uid: String) {
         COLLECTIONS_POSTS.whereField("ownerUid", isEqualTo: uid).getDocuments { snapshot, _ in
-            guard let documents = snapshot?.documents else {return}
-            self.posts = documents.compactMap({try? $0.data(as: Post.self)})
-            
+            guard let documents = snapshot?.documents else { return }
+            let posts = documents.compactMap { try? $0.data(as: Post.self) }
+            self.posts = posts.sorted { $0.timestamp.dateValue() > $1.timestamp.dateValue() }
         }
     }
 }
