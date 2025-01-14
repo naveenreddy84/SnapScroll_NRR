@@ -11,62 +11,40 @@ import SwiftUI
 import Kingfisher
 
 struct ProilleHeaderView: View {
-    
-
     @ObservedObject var viewModel: ProfileViewModel
-    
-    
+    @Binding var showEditProfile: Bool
 
-    
-    var body: some View{
-        VStack(alignment: .leading){
-            HStack{
-
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) { // ✅ Add spacing only where needed
+            // Profile Image and Stats
+            HStack {
                 KFImage(URL(string: viewModel.user.profileImageUrl))
-
                     .resizable()
                     .scaledToFill()
                     .frame(width: 80, height: 80)
                     .clipShape(Circle())
                     .padding(.leading)
-                
-                Spacer()
-                
-                HStack(spacing: 16){
-                    UserStatView(value: 1, title: "Post")
-                    UserStatView(value: 2, title: "Followers")
-                    UserStatView(value: 4, title: "Following")
-                }.padding(.trailing, 32)
 
-                
+                Spacer()
+
+                HStack(spacing: 16) {
+                    UserStatView(value: viewModel.user.stats?.posts ?? 0, title: "Posts")
+                    UserStatView(value: viewModel.user.stats?.followers ?? 0, title: "Followers")
+                    UserStatView(value: viewModel.user.stats?.following ?? 0, title: "Following")
+                }
+                .padding(.trailing, 32)
             }
-            
 
+            // Username and Bio
             Text(viewModel.user.fullname)
+                .font(.system(size: 15, weight: .semibold))
+                .padding(.horizontal)
 
-                .font(.system(size: 15 , weight: .semibold))
-                .padding([.leading, .top])
-            
-            Text("Montreal | Student")
+            Text(viewModel.user.bio ?? "")
                 .font(.system(size: 15))
-                .padding(.leading)
-                .padding(.top, 1)
-            
-            HStack {
-                Spacer()
-                
+                .padding(.horizontal)
 
-                ProfileActionButtonView(viewModel: viewModel)
-
-
-                
-                Spacer()
-            }.padding(.top)
+            ProfileActionButtonView(viewModel: viewModel)
         }
     }
 }
-
-
-
-
-
