@@ -24,7 +24,8 @@ struct ProfileView: View {
             VStack(spacing: 32){
 
                 ProilleHeaderView(viewModel: viewModel)
-                PostGridView()
+                
+                PostGridView(config: .profile(user.id ?? ""))
 
                 
             }.padding(.top)

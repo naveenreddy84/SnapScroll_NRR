@@ -6,27 +6,36 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct FeedCell: View {
+    @ObservedObject var viewModel: FeedCellViewModel
+    
+    var didLike: Bool { return viewModel.post.didLike ?? false}
+    
+    init(viewModel: FeedCellViewModel) {
+        self.viewModel = viewModel
+    }
+    
     var body: some View {
         VStack(alignment: .leading){
             
             //user info
             HStack{
-                Image("beach")
+                KFImage(URL(string: viewModel.post.ownerImageUrl))
                     .resizable()
                     .scaledToFill()
                     .frame(width: 36, height: 36)
                     .clipped()
                     .cornerRadius(18)
                 
-                Text("ravali")
+                Text(viewModel.post.ownerUsername)
                     .font(.system(size: 14, weight: .semibold))
                     
             }
             
             //post image
-            Image("beach")
+            KFImage(URL(string: viewModel.post.imageUrl))
                 .resizable()
                 .scaledToFill()
                 .frame(maxHeight: 440)
@@ -34,10 +43,13 @@ struct FeedCell: View {
             
             //action buttons - like, comment, share
             HStack(spacing: 16){
-                Button(action: {}, label: {
-                    Image(systemName: "heart")
+                Button(action: {
+                    didLike ? viewModel.unlike() : viewModel.like()
+                }, label: {
+                    Image(systemName: didLike ? "heart.fill" : "heart")
                         .resizable()
                         .scaledToFill()
+                        .foregroundColor(didLike ? .red : .black)
                         .frame(width: 20, height: 20)
                         .font(.system(size: 20))
                         .padding(5)
@@ -63,16 +75,16 @@ struct FeedCell: View {
             }.foregroundColor(.black)
             
             //likes message
-            Text("3 likes")
+            Text(viewModel.likeString)
                 .font(.system(size: 14, weight: .semibold))
                 .padding(.leading, 8)
                 .padding(.bottom, 2)
             
             //caption
             HStack{
-                Text("Beaching")
+                Text(viewModel.post.ownerUsername)
                     .font(.system(size: 14, weight: .semibold)) +
-                Text(" Live in the moment because this too shall pass, have fun and love.")
+                Text(" \(viewModel.post.capttion)")
                     .font(.system(size: 15))
             }.padding(.horizontal, 8)
             
@@ -86,6 +98,3 @@ struct FeedCell: View {
     }
 }
 
-#Preview {
-    FeedCell()
-}
