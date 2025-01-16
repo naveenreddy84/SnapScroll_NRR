@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
 
 class ProfileViewModel: ObservableObject {
     @Published var user: User
@@ -79,4 +80,72 @@ class ProfileViewModel: ObservableObject {
             }
         }
     }
+    
+    func fetchFollowers(completion: @escaping ([User]) -> Void) {
+            Firestore.firestore()
+                .collection("followers")
+                .document(user.id ?? "")
+                .collection("user-followers")
+                .getDocuments { snapshot, _ in
+                    guard let documents = snapshot?.documents else {
+                        completion([])
+                        return
+                    }
+
+                    let userIds = documents.map { $0.documentID }
+                    let group = DispatchGroup()
+                    var followers: [User] = []
+
+                    for userId in userIds {
+                        group.enter()
+                        Firestore.firestore()
+                            .collection("users")
+                            .document(userId)
+                            .getDocument { userSnapshot, _ in
+                                if let userData = try? userSnapshot?.data(as: User.self) {
+                                    followers.append(userData)
+                                }
+                                group.leave()
+                            }
+                    }
+
+                    group.notify(queue: .main) {
+                        completion(followers)
+                    }
+                }
+        }
+
+        func fetchFollowing(completion: @escaping ([User]) -> Void) {
+            Firestore.firestore()
+                .collection("following")
+                .document(user.id ?? "")
+                .collection("user-following")
+                .getDocuments { snapshot, _ in
+                    guard let documents = snapshot?.documents else {
+                        completion([])
+                        return
+                    }
+
+                    let userIds = documents.map { $0.documentID }
+                    let group = DispatchGroup()
+                    var following: [User] = []
+
+                    for userId in userIds {
+                        group.enter()
+                        Firestore.firestore()
+                            .collection("users")
+                            .document(userId)
+                            .getDocument { userSnapshot, _ in
+                                if let userData = try? userSnapshot?.data(as: User.self) {
+                                    following.append(userData)
+                                }
+                                group.leave()
+                            }
+                    }
+
+                    group.notify(queue: .main) {
+                        completion(following)
+                    }
+                }
+        }
 }
